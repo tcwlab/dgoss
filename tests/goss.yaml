@@ -1,0 +1,21 @@
+file:
+  /usr/local/bin/semantic-release:
+    exists: true
+    filetype: symlink
+command:
+  dgoss:
+    exit-status: 1
+    exec: "dgoss"
+    stdout: []
+    stderr:
+      - USAGE
+    timeout: 10000 # in milliseconds
+    skip: false
+  goss:
+    exit-status: 0
+    exec: "goss"
+    stdout:
+      - goss version v0.3.16
+    stderr: []
+    timeout: 10000 # in milliseconds
+    skip: false
