@@ -8,7 +8,7 @@ much details about the usage of these tools, but only how to use this image.
 
 ## Quick reference
 
-- **Maintained by:** [Sascha Willomitzer (of the TCWlab project)](https://gitlab.com/sascha_willomitzer)
+- **Maintained by:** [Sascha Willomitzer](https://thechameleonway.com) [(of the TCWlab project)](https://gitlab.com/sascha_willomitzer)
 - **Where to get help:** [file an issue](https://gitlab.com/tcwlab.com/saas/baseline/images/dgoss/-/issues)
 - **Supported architectures:** linux/amd64
 - **Published image artifact details:** [see source code repository](https://gitlab.com/tcwlab.com/saas/baseline/images/dgoss/-/tree/main)
