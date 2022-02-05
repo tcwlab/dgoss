@@ -30,8 +30,6 @@ docker-build:
   tags:
     - docker
     - linux
-  services:
-    - docker:dind
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   # Default branch leaves tag empty (= latest tag)
@@ -52,7 +50,6 @@ validate-image:
     GOSS_FILES_PATH: goss
     GOSS_FILES_STRATEGY: cp
   script:
-    - env
     - dgoss run -it $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
 
 publish-build:
@@ -62,8 +59,6 @@ publish-build:
   tags:
     - docker
     - linux
-  services:
-    - docker:dind
   only:
     - main
   before_script:
