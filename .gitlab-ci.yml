@@ -53,6 +53,7 @@ validate-image:
     - linux
   variables:
     GOSS_FILES_PATH: tests
+    GOSS_FILES_STRATEGY: cp
   script:
     - env
     - dgoss run -it  tcwlab/dgoss:latest
