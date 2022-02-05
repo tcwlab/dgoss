@@ -1,7 +1,10 @@
 file:
-  /usr/local/bin/semantic-release:
+  /usr/bin/goss:
     exists: true
-    filetype: symlink
+    filetype: file
+  /usr/bin/dgoss:
+    exists: true
+    filetype: file
 command:
   dgoss:
     exit-status: 1
@@ -13,7 +16,7 @@ command:
     skip: false
   goss:
     exit-status: 0
-    exec: "goss"
+    exec: "goss -v"
     stdout:
       - goss version v0.3.16
     stderr: []
