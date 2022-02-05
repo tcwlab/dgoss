@@ -1,92 +1,126 @@
-# dgoss
+# `dgoss`
 
+## tl;dr
 
+This image is used to validate that a container is behaving and working as expected.
+As this project is just _wrapping_ the `goss` and `dgoss` tools, you will not find
+much details about the usage of these tools, but only how to use this image.
+
+## Quick reference
+
+- **Maintained by:** [Sascha Willomitzer](https://thechameleonway.com) [(of the TCWlab project)](https://gitlab.com/sascha_willomitzer)
+- **Where to get help:** [file an issue](https://gitlab.com/tcwlab.com/saas/baseline/images/dgoss/-/issues)
+- **Supported architectures:** linux/amd64
+- **Published image artifact details:** [see source code repository](https://gitlab.com/tcwlab.com/saas/baseline/images/dgoss/-/tree/main)
+- **Documentation:** For `goss` and `dgoss` you can find some explanations in the [original project](https://github.com/aelsabbahy/goss/blob/master/README.md)
 
 ## Getting started
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+This docker image is intended to be used as a part of a CI/CD pipeline. It is based on the official
+[Docker library image](https://hub.docker.com/_/docker) and the great work of [aelsabbahy](https://github.com/aelsabbahy)
+and his [GOSS tool](https://github.com/aelsabbahy/goss/).
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
 
-## Add your files
+As we only use this image as part of our GitLab pipelines, this is the configuration you could use.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+The folder structure is very lean:
 
+```bash
+.
+├── .gitlab-ci.yml
+├── Dockerfile
+├── goss
+│   └── goss.yaml
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/tcwlab.com/saas/baseline/images/dgoss.git
-git branch -M main
-git push -uf origin main
+
+First of all, you need a container image to test.
+
+But in the following steps we only focus on
+the part of _using_ [`tcwlab/dgoss`](https://hub.docker.com/r/tcwlab/dgoss).
+
+### Step 1: `.gitlab-ci.yml`
+
+For a full working example, please have a look at
+[this working solution](https://gitlab.com/tcwlab.com/saas/baseline/images/dgoss/-/blob/main/.gitlab-ci.yml).
+
+This is a snippet for your `.gitlab-ci.yml`:
+
+```yaml
+[...]
+validate-image:
+  stage: test
+  # For this example we stick to the :latest tag
+  image: tcwlab/dgoss:latest
+  variables:
+    # Path to the goss.yaml file in your repository
+    GOSS_FILES_PATH: goss
+    # Strategy to fix issues on some platforms
+    GOSS_FILES_STRATEGY: cp
+  script:
+    - dgoss run -it <YOUR_CONTAINER_IMAGE>
+  [...]
 ```
 
-## Integrate with your tools
+### Step 2: `Dockerfile`
 
-- [ ] [Set up project integrations](https://gitlab.com/tcwlab.com/saas/baseline/images/dgoss/-/settings/integrations)
+As this Getting Started Guide is not taking care of multistage builds, etc. we start
+as lean as we can:
 
-## Collaborate with your team
+```Dockerfile
+FROM tcwlab/dgoss:latest
+RUN echo "hello from inside"
+```
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+If you want to see a real world example, please [have a look here](https://gitlab.com/tcwlab.com/saas/baseline/images/dgoss/-/blob/main/Dockerfile).
 
-## Test and Deploy
+### Step 3: `goss.yaml`
 
-Use the built-in continuous integration in GitLab.
+In order to test our container image, we define what we want to have inside.
+- binary for `goss` is in place
+- script for `dgoss` is in place
+- `goss -v` returns the wanted version (in this example v0.3.16)
+- we expect `dgoss` to run on a error, but want to see the usage information.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+```yaml
+file:
+  /usr/bin/goss:
+    exists: true
+    filetype: file
+  /usr/bin/dgoss:
+    exists: true
+    filetype: file
+command:
+  goss:
+    exit-status: 0
+    exec: "goss -v"
+    stdout:
+      - goss version v0.3.16
+    stderr: []
+    timeout: 10000 # in milliseconds
+    skip: false
+  dgoss:
+    exit-status: 1
+    exec: "dgoss"
+    stdout: []
+    stderr:
+      - USAGE
+    timeout: 10000 # in milliseconds
+    skip: false
+```
+Yep, that's it.
+If you don't believe me, have a look [here](https://gitlab.com/tcwlab.com/saas/baseline/images/dgoss/-/blob/main/goss/goss.yaml).
 
 ## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+If you are interested in the upcoming/planned features, ideas and milestones,
+please have a look at our [board](https://gitlab.com/tcwlab.com/saas/baseline/images/dgoss/-/boards).
 
 ## License
-For open source projects, say how it is licensed.
+This project is licensed under [Apache License v2](./LICENSE).
 
 ## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+This project is maintained "best effort", which means, we strive for automation as much as we can
+A lot of updates will be done "automagically".
+
+We do **not** have a specific dedicated set of people to work on this project.
+
+It absolutely comes with **no warranty**.

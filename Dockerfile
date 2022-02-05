@@ -1,7 +1,7 @@
 #####
 # STEP 1: build base image
 #####
-FROM docker:latest AS base
+FROM docker:20@sha256:a729cce205a05b0b86dc8dca87823efaffc3f74979fe7dc86a707c2fbf631b61 AS base
 RUN apk add -U --no-cache bash && \
     apk upgrade && \
     rm -rf /var/cache/apk/*
@@ -12,9 +12,9 @@ RUN apk add -U --no-cache bash && \
 FROM base AS dependencies
 RUN apk add -U --no-cache wget && \
     rm -rf /var/cache/apk/* && \
-    wget "https://github.com/aelsabbahy/goss/releases/download/v0.3.16/goss-linux-amd64" -O /usr/bin/goss && \
+    wget -q "https://github.com/aelsabbahy/goss/releases/download/v0.3.16/goss-linux-amd64" -O /usr/bin/goss && \
     chmod +rx /usr/bin/goss && \
-    wget "https://github.com/aelsabbahy/goss/releases/download/v0.3.16/dgoss" -O /usr/bin/dgoss && \
+    wget -q "https://github.com/aelsabbahy/goss/releases/download/v0.3.16/dgoss" -O /usr/bin/dgoss && \
     chmod +rx /usr/bin/dgoss
 
 #####
