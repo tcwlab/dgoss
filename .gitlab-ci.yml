@@ -41,9 +41,6 @@ docker-build:
     - docker build --no-cache -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
     - echo "Pushing image '$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA' to gitlab registry"
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
-  # Run this job in a branch where a Dockerfile exists
-  except:
-    - main
 
 validate-image:
   stage: test
@@ -52,12 +49,11 @@ validate-image:
     - docker
     - linux
   variables:
-    GOSS_FILES_PATH: tests
+    GOSS_FILES_PATH: goss
     GOSS_FILES_STRATEGY: cp
   script:
     - env
-    - dgoss run -it  tcwlab/dgoss:latest
-    # $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - dgoss run -it $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
 
 publish-build:
   stage: publish
