@@ -6,6 +6,7 @@ stages:
 
 mega-linter:
   stage: lint
+  # TODO: find more specific, smaller image
   image: megalinter/megalinter:v5
   tags:
     - docker
@@ -39,6 +40,8 @@ docker-build:
     - docker build --no-cache -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
     - echo "Pushing image '$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA' to gitlab registry"
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+  except:
+    - main
 
 validate-image:
   stage: test
@@ -51,3 +54,5 @@ validate-image:
     GOSS_FILES_STRATEGY: cp
   script:
     - dgoss run -it $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  except:
+    - main
