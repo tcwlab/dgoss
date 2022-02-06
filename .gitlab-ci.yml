@@ -6,6 +6,7 @@ stages:
 
 mega-linter:
   stage: lint
+  # TODO: find more specific, smaller image
   image: megalinter/megalinter:v5
   tags:
     - docker
@@ -39,6 +40,8 @@ docker-build:
     - docker build --no-cache -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
     - echo "Pushing image '$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA' to gitlab registry"
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+  except:
+    - main
 
 validate-image:
   stage: test
@@ -51,24 +54,5 @@ validate-image:
     GOSS_FILES_STRATEGY: cp
   script:
     - dgoss run -it $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-
-publish-build:
-  stage: publish
-  # Use the official docker image.
-  image: docker:latest
-  tags:
-    - docker
-    - linux
-  only:
+  except:
     - main
-  before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-    - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PUSH_TOKEN"
-  script:
-    - DATE_TAG=$(date '+%Y%m%d')
-    - echo "adding latest tag and publishing to DockerHub"
-    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $DOCKERHUB_USERNAME/$CI_PROJECT_NAME:latest
-    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $DOCKERHUB_USERNAME/$CI_PROJECT_NAME:$DATE_TAG
-    - docker push $DOCKERHUB_USERNAME/$CI_PROJECT_NAME:latest
-    - docker push $DOCKERHUB_USERNAME/$CI_PROJECT_NAME:$DATE_TAG
