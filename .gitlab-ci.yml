@@ -23,6 +23,7 @@ mega-linter:
     expire_in: 1 week
   except:
     - main
+    - tags
 
 docker-build:
   stage: build
@@ -42,6 +43,7 @@ docker-build:
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
   except:
     - main
+    - tags
 
 validate-image:
   stage: test
@@ -56,6 +58,7 @@ validate-image:
     - dgoss run -it $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   except:
     - main
+    - tags
 
 semantic-release:
   stage: release
