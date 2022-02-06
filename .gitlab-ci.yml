@@ -57,7 +57,7 @@ validate-image:
   except:
     - main
 
-.getNextVersion:
+semantic-release:
   stage: release
   image: tcwlab/semantic-release:latest
   tags:
