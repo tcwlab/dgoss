@@ -3,7 +3,7 @@
 [![pipeline status](https://gitlab.com/tcwlab.com/saas/baseline/images/dgoss/badges/main/pipeline.svg)](https://gitlab.com/tcwlab.com/saas/baseline/images/dgoss/-/commits/main)
 [![coverage report](https://gitlab.com/tcwlab.com/saas/baseline/images/dgoss/badges/main/coverage.svg)](https://gitlab.com/tcwlab.com/saas/baseline/images/dgoss/-/commits/main)
 [![GitHub tag](https://img.shields.io/github/tag/tcwlab/dgoss)](https://github.com/tcwlab/dgoss/releases/?include_prereleases&sort=semver "View GitHub releases")
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://gitlab.com/tcwlab.com/saas/baseline/images/dgoss/-/blob/main/LICENSE)
 
 ## tl;dr
 
