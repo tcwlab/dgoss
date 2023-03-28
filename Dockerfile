@@ -1,7 +1,7 @@
 #####
 # STEP 1: build base image
 #####
-FROM docker:20@sha256:103073806c42ba1e53181b9353a88f6a8fbcf20d4ca37480b10760c1f1b9e473 AS base
+FROM docker:20@sha256:52f267d51aa7f5d32c83ba894102f27f1218398b592f84017ce94ee7610cebde AS base
 RUN apk add -U --no-cache bash && \
     apk upgrade && \
     rm -rf /var/cache/apk/*
