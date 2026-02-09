@@ -12,9 +12,9 @@ RUN apk add -U --no-cache bash && \
 FROM base AS dependencies
 RUN apk add -U --no-cache wget && \
     rm -rf /var/cache/apk/* && \
-    wget -q "https://github.com/aelsabbahy/goss/releases/download/v0.3.16/goss-linux-amd64" -O /usr/bin/goss && \
+    wget -q "https://github.com/goss-org/goss/releases/latest/download/goss-linux-amd64" -O /usr/bin/goss && \
     chmod +rx /usr/bin/goss && \
-    wget -q "https://github.com/aelsabbahy/goss/releases/download/v0.3.16/dgoss" -O /usr/bin/dgoss && \
+    wget -q "https://github.com/goss-org/goss/releases/latest/download/dgoss" -O /usr/bin/dgoss && \
     chmod +rx /usr/bin/dgoss
 
 #####

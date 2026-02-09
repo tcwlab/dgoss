@@ -18,7 +18,7 @@ command:
     exit-status: 0
     exec: "goss -v"
     stdout:
-      - goss version v0.3.16
+      - goss version v
     stderr: []
     timeout: 10000 # in milliseconds
     skip: false
